@@ -1,0 +1,31 @@
+name: Polyrepo Component Simulation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Component Code
+        uses: actions/checkout@v4
+
+      - name: Log Start Event
+        run: |
+          echo "Starting simulation run for standalone component."
+          echo "Timestamp: $(date -u)"
+
+      # Note: Since this folder is the root of your polyrepo, 
+      # the Dockerfile is right here. No need to 'cd src/cartservice'
+      - name: Compile and Build Docker Image
+        run: |
+          docker build -t test-build-standalone:latest .
+
+      
+      - name: Log Execution Metadata
+        run: |
+          echo "Successfully compiled isolated container asset."
+          echo "Ending Timestamp: $(date -u)"
